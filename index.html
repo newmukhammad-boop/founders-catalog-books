@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Founders Kitoblar</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --black: #0d0c0b;
+  --yellow: #F5C518;
+  --yellow2: #d9a800;
+  --white: #ffffff;
+  --off: #f7f6f3;
+  --muted: #888;
+  --green: #16a34a;
+}
+body { background: var(--off); color: var(--black); font-family: 'Merriweather', serif; }
+
+/* HEADER */
+header {
+  background: var(--black); padding: 0 56px; height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 300;
+}
+.logo { font-family: 'Lora', serif; font-size: 21px; font-weight: 700; color: var(--yellow); }
+.logo em { font-style: italic; font-weight: 400; color: rgba(255,255,255,0.85); }
+
+.admin-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: transparent; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;
+  padding: 9px 18px; border-radius: 8px;
+  font-family: 'Merriweather', serif; font-size: 13px; font-weight: 700;
+  color: var(--white); transition: all 0.2s;
+}
+.admin-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
+
+
+.cart-btn-header {
+  position: relative;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--white); transition: all 0.2s;
+}
+.cart-btn-header:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); }
+.cart-count {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--yellow); color: var(--black);
+  font-size: 10px; font-weight: 700;
+  width: 18px; height: 18px; border-radius: 50%;
+  display: none; align-items: center; justify-content: center;
+  border: 2px solid var(--black);
+}
+.cart-count.visible { display: flex; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #0d0c0b 0%, #1a1500 55%, #2a1f00 100%);
+  padding: 72px 56px 60px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -100px; right: -100px;
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, rgba(245,197,24,0.16) 0%, transparent 68%);
+  pointer-events: none;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, var(--yellow), transparent);
+}
+.hero-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--yellow);
+  margin-bottom: 18px; display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--yellow); }
+.hero h1 { font-size: clamp(44px, 6vw, 82px); font-weight: 900; line-height: 1.02; color: var(--white); max-width: 640px; }
+.hero h1 span { font-style: italic; font-weight: 300; color: var(--yellow); }
+.hero-sub { margin-top: 20px; font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
+
+/* SECTION LABEL */
+.section-label {
+  padding: 40px 56px 24px; font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: #bbb; display: flex; align-items: center; gap: 16px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: #e5e4e0; }
+
+/* GRID */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; padding: 0 56px 60px; }
+
+/* CARD */
+.card {
+  background: var(--white); border-radius: 18px; overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  transition: transform 0.32s ease, box-shadow 0.32s ease;
+  display: flex; flex-direction: column;
+  animation: fadeUp 0.45s ease both;
+  position: relative;
+}
+.card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.12); }
+.card:hover .real-book-img { transform: scale(1.05) translateY(-4px) rotate(-2deg); filter: drop-shadow(0 24px 40px rgba(0,0,0,0.55)); }
+.card.in-cart { outline: 2.5px solid var(--yellow); }
+
+/* COVER */
+.card-cover {
+  height: 240px; position: relative;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.real-book-img {
+  height: 200px; width: auto; max-width: 85%; object-fit: contain;
+  filter: drop-shadow(0 12px 28px rgba(0,0,0,0.45));
+  transition: transform 0.32s ease, filter 0.32s ease;
+  transform: rotate(-2deg); position: relative; z-index: 2;
+}
+
+/* CARD BODY */
+.card-body { padding: 20px 22px 12px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.card-genre { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.card-title { font-size: 16px; font-weight: 700; line-height: 1.3; color: var(--black); }
+.card-author { font-size: 12px; font-style: italic; font-weight: 300; color: var(--muted); }
+.card-divider { height: 1px; background: #f0efe9; margin: 4px 0; }
+.card-desc { font-size: 12px; font-weight: 300; line-height: 1.8; color: #555; flex: 1; }
+.card-tags {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;
+}
+.tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 20px;
+  background: #f4f3ee; color: #666;
+}
+
+/* CARD FOOTER */
+.card-footer {
+  padding: 14px 22px 18px;
+  display: flex; flex-direction: column; gap: 11px;
+  border-top: 1px solid #f0efe9;
+}
+.card-footer-top {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-price { font-size: 19px; font-weight: 900; color: var(--black); white-space: nowrap; }
+.card-price span { font-size: 11px; font-weight: 300; color: var(--muted); margin-left: 3px; }
+.card-footer-btns { display: flex; gap: 8px; }
+
+.add-cart-btn {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  background: var(--black); color: var(--yellow);
+  border: none; cursor: pointer; padding: 10px 16px; border-radius: 10px;
+  font-family: 'Merriweather', serif; font-size: 11px; font-weight: 700;
+  transition: background 0.2s, transform 0.15s; white-space: nowrap;
+}
+.add-cart-btn:hover { background: #222; transform: scale(1.02); }
+.add-cart-btn.added { background: var(--yellow); color: var(--black); }
+.add-cart-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ─── CART PANEL ─── */
+.cart-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  z-index: 400; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+
+.cart-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 420px; max-width: 100vw;
+  background: var(--white); z-index: 500;
+  display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+  box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+}
+.cart-panel.open { transform: translateX(0); }
+
+.cart-header {
+  background: var(--black); padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cart-header h2 { font-family: 'Lora', serif; font-size: 18px; font-weight: 700; color: var(--yellow); }
+.cart-close {
+  background: none; border: none; color: #666; cursor: pointer;
+  font-size: 22px; line-height: 1; padding: 4px;
+  transition: color 0.2s;
+}
+.cart-close:hover { color: var(--white); }
+
+.cart-empty {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px;
+  color: var(--muted); font-size: 13px; font-weight: 300; font-style: italic;
+}
+.cart-empty-icon { font-size: 48px; opacity: 0.3; }
+
+.cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+
+.cart-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; border-radius: 10px; background: var(--off);
+}
+.cart-item-img {
+  width: 44px; height: 60px; object-fit: contain; flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+}
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-title { font-size: 13px; font-weight: 700; color: var(--black); line-height: 1.3; }
+.cart-item-author { font-size: 11px; font-style: italic; color: var(--muted); margin-top: 2px; }
+.cart-item-price { font-size: 14px; font-weight: 900; color: var(--black); margin-top: 4px; }
+.cart-item-price span { font-size: 10px; font-weight: 300; color: var(--muted); }
+.cart-remove {
+  background: none; border: none; color: #ccc; cursor: pointer;
+  font-size: 18px; padding: 4px; transition: color 0.2s; flex-shrink: 0;
+}
+.cart-remove:hover { color: #e53e3e; }
+
+/* CART SUMMARY */
+.cart-summary {
+  border-top: 1px solid #ebebeb; padding: 20px 24px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.summary-row { display: flex; justify-content: space-between; align-items: baseline; }
+.summary-label { font-size: 12px; font-weight: 300; color: var(--muted); }
+.summary-value { font-size: 13px; font-weight: 700; color: var(--black); }
+
+.discount-box {
+  background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px;
+  padding: 12px 14px; display: none; flex-direction: column; gap: 4px;
+}
+.discount-box.show { display: flex; }
+.discount-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); }
+.discount-detail { font-size: 11px; font-weight: 300; color: #166534; line-height: 1.6; }
+.discount-save { font-size: 13px; font-weight: 700; color: var(--green); }
+
+.summary-divider { height: 1px; background: #ebebeb; }
+
+.total-row { display: flex; justify-content: space-between; align-items: baseline; }
+.total-label { font-size: 14px; font-weight: 700; color: var(--black); }
+.total-value { font-size: 22px; font-weight: 900; color: var(--black); }
+
+.checkout-btn {
+  background: var(--yellow); color: var(--black); border: none; cursor: pointer;
+  padding: 14px; border-radius: 10px; width: 100%;
+  font-family: 'Merriweather', serif; font-size: 14px; font-weight: 700;
+  transition: background 0.2s; margin-top: 4px;
+}
+.checkout-btn:hover { background: var(--yellow2); }
+
+/* FAQ */
+.faq-section {
+  padding: 0 56px 64px;
+}
+.faq-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: #bbb;
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 28px;
+}
+.faq-label::after { content: ''; flex: 1; height: 1px; background: #e5e4e0; }
+
+.faq-list { display: flex; flex-direction: column; gap: 0; }
+
+.faq-item {
+  border-bottom: 1px solid #ebebeb;
+  overflow: hidden;
+}
+.faq-item:first-child { border-top: 1px solid #ebebeb; }
+
+.faq-question {
+  width: 100%; background: none; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 4px; gap: 20px; text-align: left;
+  font-family: 'Merriweather', serif; font-size: 15px; font-weight: 700;
+  color: var(--black); transition: color 0.2s;
+}
+.faq-question:hover { color: var(--yellow2); }
+.faq-question.open { color: var(--black); }
+
+.faq-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #f4f3ee; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 300; color: var(--black);
+  transition: background 0.2s, transform 0.3s;
+}
+.faq-question.open .faq-icon {
+  background: var(--yellow);
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(.4,0,.2,1), padding 0.3s;
+  padding: 0 4px;
+}
+.faq-answer.open {
+  max-height: 400px;
+  padding-bottom: 20px;
+}
+.faq-answer p {
+  font-size: 13px; font-weight: 300; line-height: 1.85; color: #555;
+}
+
+@media (max-width: 900px) {
+  .faq-section { padding-left: 20px; padding-right: 20px; }
+}
+
+/* PROMO BANNER */
+.promo-banner {
+  background: var(--black);
+  border-bottom: 2px solid var(--yellow);
+  padding: 18px 56px;
+}
+.promo-inner {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+.promo-icon { font-size: 24px; flex-shrink: 0; }
+.promo-text {
+  display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 200px;
+}
+.promo-text strong {
+  font-size: 14px; font-weight: 700; color: var(--yellow);
+  font-family: 'Merriweather', serif;
+}
+.promo-text span {
+  font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.8);
+  font-family: 'Merriweather', serif;
+}
+.promo-badges {
+  display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0;
+}
+.promo-badge {
+  font-size: 11px; font-weight: 700; font-family: 'Merriweather', serif;
+  padding: 5px 12px; border-radius: 20px;
+  background: rgba(245,197,24,0.1); color: var(--yellow);
+  border: 1px solid rgba(245,197,24,0.25); letter-spacing: 0.02em;
+}
+.promo-badge.highlight {
+  background: var(--yellow); color: var(--black);
+  border-color: var(--yellow);
+}
+
+/* TRANSLATE BTN */
+.translate-btn {
+  background: #f4f3ee; color: #555; border: 1px solid #e8e7e2;
+  cursor: pointer; padding: 9px 14px; border-radius: 10px;
+  font-family: 'Merriweather', serif; font-size: 11px; font-weight: 700;
+  transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+}
+.translate-btn:hover { background: #e8f4ff; border-color: #93c5fd; color: #1d4ed8; }
+
+@media (max-width: 900px) {
+  .promo-banner { padding-left: 20px; padding-right: 20px; }
+  .promo-badges { display: none; }
+}
+
+/* FOOTER */
+footer { background: var(--yellow); padding: 26px 56px; display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { font-family: 'Lora', serif; font-size: 17px; font-weight: 700; color: var(--black); }
+footer p { font-size: 11px; font-weight: 300; color: rgba(0,0,0,0.4); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  header, .hero, .section-label, footer { padding-left: 20px; padding-right: 20px; }
+  .grid { grid-template-columns: repeat(2, 1fr); padding: 0 20px 40px; }
+}
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Founders <em>Kitoblar</em></div>
+  <div style="display:flex;gap:10px;align-items:center;">
+  <button class="admin-btn" onclick="window.open('https://t.me/founders_ms','_blank')">
+    Admin
+  </button>
+  <button class="cart-btn-header" onclick="toggleCart()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">Founders Kitoblar</div>
+  <h1>Eng yaxshi<br><span>kitoblar</span><br>to'plami</h1>
+  <div class="hero-sub">Biznes · Psixologiya · Rivojlanish · Marketing</div>
+</div>
+
+<!-- PROMO BANNER -->
+<div class="promo-banner">
+  <div class="promo-inner">
+    <div class="promo-icon">🎁</div>
+    <div class="promo-text">
+      <strong>Ko'p kitob — ko'p foyda!</strong>
+      <span>Qancha ko'p kitob olsangiz, shuncha ko'p tejaysiz. Savatchada narx va chegirma avtomatik hisoblanadi.</span>
+    </div>
+    <div class="promo-badges">
+      <span class="promo-badge">2 ta → −10%</span>
+      <span class="promo-badge">3 ta → −20%</span>
+      <span class="promo-badge">4 ta → −25%</span>
+      <span class="promo-badge highlight">5 ta → −32%</span>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">Barcha kitoblar</div>
+<div class="grid" id="grid"></div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-label">Ko'p beriladigan savollar</div>
+  <div class="faq-list" id="faqList"></div>
+</div>
+
+<footer>
+  <div class="footer-logo">Founders Kitoblar</div>
+</footer>
+
+<!-- Cart overlay -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<!-- Cart panel -->
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h2>Savat</h2>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+
+  <div class="cart-empty" id="cartEmpty">
+    <div class="cart-empty-icon">🛒</div>
+    <p>Savat hali bo'sh</p>
+  </div>
+
+  <div class="cart-items" id="cartItems" style="display:none"></div>
+
+  <div class="cart-summary" id="cartSummary" style="display:none">
+    <div class="summary-row">
+      <span class="summary-label">Jami kitoblar</span>
+      <span class="summary-value" id="summaryCount">0 ta</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Asl narx</span>
+      <span class="summary-value" id="summaryOriginal">0 so'm</span>
+    </div>
+
+    <div class="discount-box" id="discountBox">
+      <div class="discount-title" id="discountTitle">Chegirma</div>
+      <div class="discount-detail" id="discountDetail"></div>
+      <div class="discount-save" id="discountSave"></div>
+    </div>
+
+    <div class="summary-divider"></div>
+    <div class="total-row">
+      <span class="total-label">To'lov summasi</span>
+      <span class="total-value" id="summaryTotal">0 so'm</span>
+    </div>
+    <button class="checkout-btn" onclick="window.open('https://t.me/founders_ms','_blank')">Buyurtma berish →</button>
+  </div>
+</div>
+
+<script>
+const books = [
+  {
+    id: 1,
+    title: "$100M Takliflar",
+    author: "Alex Hormozi",
+    genre: "Biznes",
+    price: 270000,
+    priceLabel: "270 000",
+    desc: "Hormozi bu kitobda mijozlar hech qachon rad eta olmaydigan takliflar yaratish san'atini o'rgatadi. Narx, qadr va kafolat tizimlarini qanday qurishni, raqobatchilardan qanday ajralib turishni ko'rsatadi. O'quvchilar kitob oxirida o'z biznesiga yangi, kuchli taklif yarata oladi.",
+    tags: ["Narx strategiyasi", "Savdo", "Biznes"],
+    img: "https://i.postimg.cc/nVD4WndM/10.webp",
+    bg: "linear-gradient(145deg,#0a0a0a,#1f1f1f)"
+  },
+  {
+    id: 2,
+    title: "$100M Model",
+    author: "Alex Hormozi",
+    genre: "Biznes",
+    price: 270000,
+    priceLabel: "270 000",
+    desc: "Bu kitob Hormozining biznes modeli haqida eng to'liq asari. Qanday qilib har qanday sohada daromadli, takrorlanadigan tizim qurishni, jamoani to'g'ri sozlashni va o'sishni tezlashtirishni bosqichma-bosqich ko'rsatadi.",
+    tags: ["Biznes modeli", "Tizim", "O'sish"],
+    img: "https://i.postimg.cc/jq7H1R8S/9.webp",
+    bg: "linear-gradient(145deg,#0a0a0a,#1f1f1f)"
+  },
+  {
+    id: 3,
+    title: "$100M Lidlar",
+    author: "Alex Hormozi",
+    genre: "Marketing",
+    price: 390000,
+    priceLabel: "390 000",
+    desc: "Hormozining eng oxirgi va eng katta asari. Cheksiz mijozlar oqimini qanday yaratish kerakligi haqida 300+ sahifalik to'liq qo'llanma. Reklama, kontent, referral va hamkorlik kanallari orqali lidlar jalb qilishning barcha usullari batafsil yoritilgan.",
+    tags: ["Lead generation", "Reklama", "Marketing"],
+    img: "https://i.postimg.cc/brctP26z/11.webp",
+    bg: "linear-gradient(145deg,#0a0a0a,#1f1f1f)"
+  },
+  {
+    id: 4,
+    title: "Dot-Com Sirlari",
+    author: "Russell Brunson",
+    genre: "Marketing",
+    price: 290000,
+    priceLabel: "290 000",
+    desc: "ClickFunnels asoschisi Russell Brunson online biznesda savdo hunilari (funnel) qurish sirlari haqida yozadi. Qanday qilib to'g'ri auditoriyani topish, ularni xaridorga aylantirish va avtomatlashtirilgan savdo tizimi yaratish — hammasi bu kitobda.",
+    tags: ["Funnel", "Online sotish", "Konversiya"],
+    img: "https://i.postimg.cc/BnmfC8Ky/Dotcom.webp",
+    bg: "linear-gradient(145deg,#0a0014,#1a0030)"
+  },
+  {
+    id: 5,
+    title: "Naval Ravikant Almanaxi",
+    author: "Naval Ravikant",
+    genre: "Rivojlanish",
+    price: 190000,
+    priceLabel: "190 000",
+    desc: "Silicon Valley afsonasi Naval Ravikantning boylik, baxt va hayot falsafasi haqidagi chuqur fikrlari to'plami. Leverage, o'z-o'zini anglash, erkinlik va mazmunli hayot qurish haqida qisqa lekin g'oyat ta'sirchan hikmatlar. Ko'p marta qayta o'qiladigan kitob.",
+    tags: ["Falsafa", "Boylik", "Baxt"],
+    img: "https://i.postimg.cc/JzpCQykQ/Naval.webp",
+    bg: "linear-gradient(145deg,#001428,#002a50)"
+  },
+  {
+    id: 6,
+    title: "Sotuv Bo'limi Quraman",
+    author: "Maksim Morozov",
+    genre: "Biznes",
+    price: 270000,
+    priceLabel: "270 000",
+    desc: "Samarali savdo bo'limini noldan qanday qurishni va boshqarishni ko'rsatuvchi amaliy qo'llanma. Menejer va sotuvchilarni tanlash, o'qitish, motivatsiya va KPI tizimlarini o'rnatish. O'zbek bozorida ham to'liq qo'llaniladigan strategiyalar.",
+    tags: ["Savdo jamoasi", "CRM", "Menejment"],
+    img: "https://i.postimg.cc/52sWmHCr/Sotuv_bo_lim.webp",
+    bg: "linear-gradient(145deg,#0a1a0a,#1a3d1a)"
+  },
+  {
+    id: 7,
+    title: "Tentaklarcha Sot",
+    author: "Sabri Suby",
+    genre: "Marketing",
+    price: 290000,
+    priceLabel: "290 000",
+    desc: "Avstraliyalik marketing mutaxassisi Sabri Subining raqamli marketing va reklama haqidagi bestseller asari. Facebook va Google reklama, landing page va email orqali mijozlarni jalb qilishning tizimli yondashuvi. Ko'plab real bizneslar uchun sinab ko'rilgan usullar.",
+    tags: ["Digital marketing", "Reklama", "Savdo"],
+    img: "https://i.postimg.cc/Dwx3cWXp/Tentaklarcha.webp",
+    bg: "linear-gradient(145deg,#1a0000,#3d0000)"
+  },
+  {
+    id: 8,
+    title: "Zapusk",
+    author: "Jeff Walker",
+    genre: "Biznes",
+    price: 440000,
+    priceLabel: "440 000",
+    desc: "Jeff Walker — internet-marketing dunyosidagi eng mashhur mutaxassislardan biri. Bu kitobda u o'zining 'Product Launch Formula' tizimini to'liq ochib beradi: yangi mahsulot yoki xizmatni qanday qilib shov-shuvli va daromadli tarzda bozorga olib chiqish kerakligini bosqichma-bosqich ko'rsatadi.",
+    tags: ["Mahsulot chiqarish", "Launch", "Marketing"],
+    img: "https://i.postimg.cc/5tfqf0Kd/Zapusk.webp",
+    bg: "linear-gradient(145deg,#001a0f,#003d1f)"
+  },
+];
+
+// CART STATE
+let cart = [];
+
+function fmt(n) {
+  return n.toLocaleString('uz-UZ') + ' so\'m';
+}
+
+function getDiscount(count) {
+  if (count >= 5) return { pct: 32, label: "5 va undan ko'p kitob" };
+  if (count === 4) return { pct: 25, label: "4 ta kitob" };
+  if (count === 3) return { pct: 20, label: "3 ta kitob" };
+  if (count === 2) return { pct: 10, label: "2 ta kitob" };
+  return { pct: 0, label: "" };
+}
+
+function renderCart() {
+  const count = cart.length;
+  const countEl = document.getElementById('cartCount');
+  countEl.textContent = count;
+  countEl.classList.toggle('visible', count > 0);
+
+  const isEmpty = count === 0;
+  document.getElementById('cartEmpty').style.display = isEmpty ? 'flex' : 'none';
+  document.getElementById('cartItems').style.display = isEmpty ? 'none' : 'flex';
+  document.getElementById('cartSummary').style.display = isEmpty ? 'none' : 'flex';
+
+  if (!isEmpty) {
+    // Items
+    document.getElementById('cartItems').innerHTML = cart.map(b => `
+      <div class="cart-item">
+        <img class="cart-item-img" src="${b.img}" alt="${b.title}"/>
+        <div class="cart-item-info">
+          <div class="cart-item-title">${b.title}</div>
+          <div class="cart-item-author">${b.author}</div>
+          <div class="cart-item-price">${b.priceLabel} <span>so'm</span></div>
+        </div>
+        <button class="cart-remove" onclick="removeFromCart(${b.id})">✕</button>
+      </div>
+    `).join('');
+
+    // Summary
+    const original = cart.reduce((s, b) => s + b.price, 0);
+    const disc = getDiscount(count);
+    const discAmount = Math.round(original * disc.pct / 100);
+    const total = original - discAmount;
+
+    document.getElementById('summaryCount').textContent = count + ' ta';
+    document.getElementById('summaryOriginal').textContent = fmt(original);
+    document.getElementById('summaryTotal').textContent = fmt(total);
+
+    const discBox = document.getElementById('discountBox');
+    if (disc.pct > 0) {
+      discBox.classList.add('show');
+      document.getElementById('discountTitle').textContent = `🎉 ${disc.pct}% chegirma qo'llandi!`;
+      document.getElementById('discountDetail').textContent =
+        `${disc.label} tanlanganda ${disc.pct}% chegirma:\n${fmt(original)} × ${disc.pct}% = ${fmt(discAmount)} tejaysiz`;
+      document.getElementById('discountSave').textContent = `Tejash: ${fmt(discAmount)}`;
+    } else {
+      discBox.classList.remove('show');
+    }
+  }
+}
+
+function addToCart(id) {
+  const book = books.find(b => b.id === id);
+  if (cart.find(b => b.id === id)) {
+    removeFromCart(id);
+    return;
+  }
+  cart.push(book);
+  renderCart();
+  updateCardStates();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(b => b.id !== id);
+  renderCart();
+  updateCardStates();
+}
+
+function updateCardStates() {
+  document.querySelectorAll('.card').forEach(card => {
+    const id = parseInt(card.dataset.id);
+    const inCart = cart.find(b => b.id === id);
+    card.classList.toggle('in-cart', !!inCart);
+    const btn = card.querySelector('.add-cart-btn');
+    if (btn) {
+      btn.classList.toggle('added', !!inCart);
+      btn.innerHTML = inCart
+        ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Qo'shildi`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Savatga`;
+    }
+  });
+}
+
+function toggleCart() {
+  document.getElementById('cartPanel').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+
+// FAQ
+const faqs = [
+  {
+    q: "Kitoblar qaysi tilda?",
+    a: "Barcha kitoblar o'zbek tiliga tarjima qilingan — shundayki, yosh bola o'qisa ham bemalol tushunadi. Murakkab atamalar yo'q, gap qurilishi sodda va ravon. Kitobni o'qiyotganda \"bu qanday ma'noni anglatadi?\" deb to'xtamaysiz — to'g'ridan-to'g'ri bilim sizga yetib boradi."
+  },
+  {
+    q: "Yetkazib berish qancha vaqt oladi?",
+    a: "<strong>Toshkent:</strong> 1–2 ish kuni ichida yetkaziladi.<br><br><strong>Viloyatlar:</strong> 2–3 ish kuni. Barcha viloyatlarga yetkazib berish <strong>BTS Pochta</strong> orqali amalga oshiriladi — O'zbekistonning har bir burchagiga ishonchli va tez yetib boradi.<br><br>📦 Pochta xarajati mijoz tomonidan qoplanadi. Aniq narx buyurtma paytida operator tomonidan xabar qilinadi."
+  },
+  {
+    q: "To'lov qanday amalga oshiriladi?",
+    a: "To'lov faqat <strong>karta orqali oldindan</strong> qabul qilinadi (Click yoki Payme). Naqd to'lov qabul qilinmaydi — chunki naqd pulni qo'lga olish uzoq vaqt talab qiladi va bu jarayonni sekinlashtiradi. Oldindan to'lov orqali buyurtmangiz tezroq ishga tushadi."
+  },
+  {
+    q: "Chegirma qanday ishlaydi?",
+    a: "2 ta kitob — 10%, 3 ta — 20%, 4 ta — 25%, 5 va undan ko'p kitob — 32% chegirma qo'llanadi. Chegirma avtomatik hisoblanadi va savatda aniq ko'rsatiladi — qancha tejayotganingizni ham ko'rasiz."
+  },
+  {
+    q: "Kitobni oldindan ko'rib chiqish mumkinmi?",
+    a: "Ha! Har bir kitob kartochkasidagi <strong>\"Tarjima\"</strong> tugmasini bossangiz, admin sizga Telegram orqali kitobning mundarijasi va bir necha sahifa tarjimasini tashlab beradi. Shunday qilib, sotib olishdan oldin kitob uslubi va sifati bilan tanishib olasiz."
+  },
+  {
+    q: "Qaytarish va almashtirish mumkinmi?",
+    a: "Kitob yetkazilgandan so'ng 3 kun ichida shikoyat qilish mumkin — agar kitobda bosma nuqson bo'lsa, bepul almashtirish kafolati beriladi."
+  },
+  {
+    q: "Ko'p nusxa buyurtma berish mumkinmi?",
+    a: "Ha, korporativ buyurtmalar qabul qilinadi. 10 nusxa va undan ortiq buyurtma uchun qo'shimcha chegirma va maxsus taklif bo'yicha bog'laning."
+  },
+];
+
+document.getElementById('faqList').innerHTML = faqs.map((f, i) => `
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFaq(this)">
+      ${f.q}
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer">
+      <p>${f.a}</p>
+    </div>
+  </div>
+`).join('');
+
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-question').forEach(b => {
+    b.classList.remove('open');
+    b.nextElementSibling.classList.remove('open');
+  });
+  if (!isOpen) {
+    btn.classList.add('open');
+    answer.classList.add('open');
+  }
+}
+
+// RENDER GRID
+document.getElementById('grid').innerHTML = books.map((b, i) => `
+  <div class="card" data-id="${b.id}" style="animation-delay:${i * 0.07}s">
+    <div class="card-cover" style="background:${b.bg}">
+      <img class="real-book-img" src="${b.img}" alt="${b.title}" loading="lazy"/>
+    </div>
+    <div class="card-body">
+      <div class="card-genre">${b.genre}</div>
+      <div class="card-title">${b.title}</div>
+      <div class="card-author">${b.author}</div>
+      <div class="card-divider"></div>
+      <div class="card-desc">${b.desc}</div>
+      <div class="card-tags">
+        ${b.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="card-footer-top">
+        <div class="card-price">${b.priceLabel}<span>so'm</span></div>
+      </div>
+      <div class="card-footer-btns">
+        <button class="translate-btn" onclick="window.open('https://t.me/founders_ms','_blank')">Tarjima</button>
+        <button class="add-cart-btn" onclick="addToCart(${b.id})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Savatga
+        </button>
+      </div>
+    </div>
+  </div>
+`).join('');
+</script>
+</body>
+</html>
